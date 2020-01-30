@@ -1,16 +1,23 @@
 import React from "react"
 import NavBar from "./nav/NavBar"
 import ApplicationViews from "./ApplicationViews"
+import { Route, Redirect } from "react-router-dom"
 import "./Kennel.css"
+
+
+import Login from "./auth/Login"
+import Register from "./auth/Register"
+
+
+
+// import "./Employees.css"
+// import "./animal/Animals.css"
+// import "./Location.css"
+// import "./Customers.css"
 // import Animal from "./animal/Animals"
 // import { Route } from "react-router-dom"
-import "./animal/Animals.css"
 // import LocationList from "./location/LocationList"
-import "./Location.css"
-
-import "./Employees.css"
 // import Customers from "./customers/Customers"
-import "./Customers.css"
 // import { LocationProvider } from "./location/LocationProvider"
 // import EmployeesList from "./employees/EmployeesList"
 // // import {EmployeeProvider} from ".employees/EmployeesProvider"
@@ -28,8 +35,27 @@ export default () => (
 
   
     <>
-        <NavBar />
-        <ApplicationViews />
+         <Route render={() => {
+            if (localStorage.getItem("kennel_customer")) {
+                return (
+                    <>
+                        <Route render={props => <NavBar {...props} />} />
+                        <Route render={props => <ApplicationViews {...props} />} />
+                    </>
+                )
+            } else {
+                return <Redirect to="/login" />
+            }
+        }} />
+
+        <Route path="/login" render={props => <Login {...props} />} />
+        <Route path="/register" render={props => <Register {...props} />} />
+
+
+
+
+
+
 
         {/* <h2>Nashville Kennels</h2>
         <small>Loving care when you're not there.</small>

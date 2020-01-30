@@ -37,10 +37,10 @@ export const CustomerProvider = (props) => {
         getCustomers()
     }, [])
 
-    useEffect(() => {
-        console.log("****  Employee APPLICATION STATE CHANGED  ****")
+    // useEffect(() => {
+    //     console.log("****  Employee APPLICATION STATE CHANGED  ****")
         
-    }, [customers])
+    // }, [customers])
 
     return (
         <CustomerContext.Provider value={{

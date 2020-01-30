@@ -9,7 +9,7 @@ export const EmployeeContext = React.createContext()
 /*
  This component establishes what data can be used.
  */
-export const EmployeesProvider = (props) => {
+export const EmployeeProvider = (props) => {
     const [employees, setEmployees] = useState([])
 
     const getEmployees = () => {
@@ -17,6 +17,14 @@ export const EmployeesProvider = (props) => {
             .then(res => res.json())
             .then(setEmployees)
     }
+
+    const releaseEmployee = employee => {
+        return fetch(`http://localhost:8088/employees/${employee.id}`, {
+            method: "DELETE"
+        })
+        .then(getEmployees)
+    }
+    
 
     const addEmployee = employee => {
         return fetch("http://localhost:8088/employees", {
@@ -37,14 +45,14 @@ export const EmployeesProvider = (props) => {
         getEmployees()
     }, [])
 
-    useEffect(() => {
-        console.log("****  Employee APPLICATION STATE CHANGED  ****",employees)
+    // useEffect(() => {
+    //     console.log("****  Employee APPLICATION STATE CHANGED  ****",employees)
         
-    }, [employees])
+    // }, [employees])
 
     return (
         <EmployeeContext.Provider value={{
-            employees, addEmployee
+            employees, addEmployee, releaseEmployee
         }}>
             {props.children}
         </EmployeeContext.Provider>

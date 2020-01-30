@@ -1,11 +1,11 @@
 import React, { useContext } from "react"
 import { CustomerContext } from "./CustomerProvider"
 import Customers from "./Customers"
+import "./Customers.css"
 
 
 export default () => {
     const { customers } = useContext(CustomerContext)
-  console.log(customers)
     return (
         <div className="customers">
         {

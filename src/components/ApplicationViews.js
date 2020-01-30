@@ -5,40 +5,78 @@ import { AnimalProvider } from "./animal/AnimalProvider"
 import LocationList from "./location/LocationList"
 import AnimalList from "./animal/AnimalList"
 import CustomerList from "./customers/CustomerList"
-import {CustomerProvider} from "./customers/CustomerProvider"
-import EmployeesList from "./employees/EmployeesList"
-import {EmployeesProvider} from "./employees/EmployeesProvider"
+import { CustomerProvider } from "./customers/CustomerProvider"
+import EmployeeList from "./employee/EmployeeList"
+import { EmployeeProvider } from "./employee/EmployeeProvider"
+import AnimalDetails from "./animal/AnimalDetails"
+import EmployeeForm from "./employee/EmployeeForm"
+import AnimalForm from "./animal/AnimalForm"
+import EmployeeDetails from "./employee/EmployeeDetails"
 
 export default (props) => {
-    return (
-        <>
-            <LocationProvider>
-                {/* Render the location list when http://localhost:3000/ */}
-                <Route exact path="/">
-                    <LocationList />
-                </Route>
-            </LocationProvider>
+  return (
+    <>
+      <AnimalProvider>
+        <LocationProvider>
+          <CustomerProvider>
+            <Route exact path="/animals" render={
+              props => <AnimalList {...props} />
+            } />
 
-            <AnimalProvider>
-                {/* Render the animal list when http://localhost:3000/animals */}
-                <Route path="/animals">
-                    <AnimalList />
-                </Route>
-            </AnimalProvider>
+            {/* delete animal  */}
+            <Route path="/animals/:animalId(\d+)" render={
+              props => <AnimalDetails {...props} />
+            } />
 
-            <CustomerProvider>
-                {/* Render the customer list when http://localhost:3000/customers */}
-                <Route path="/customers">
-                    <CustomerList />
-                </Route>
-            </CustomerProvider>
+            <Route path="/animals/create" render={
+              props => <AnimalForm {...props} />
+            } />
 
-            <EmployeesProvider>
-                {/* Render the customer list when http://localhost:3000/employees */}
-                <Route path="/employees">
-                    <EmployeesList />
-                </Route>
-            </EmployeesProvider>
-        </>
-    )
+            <Route path="/animals/edit/:animalId(\d+)" render={
+              props => <AnimalForm {...props} />
+            } />
+          </CustomerProvider>
+        </LocationProvider>
+      </AnimalProvider>
+
+      <CustomerProvider>
+        {/* Render the customer list when http://localhost:3000/customers */}
+        <Route path="/customers">
+          <CustomerList />
+        </Route>
+      </CustomerProvider>
+
+      <EmployeeProvider>
+        <LocationProvider>
+          {/* Render the customer list when http://localhost:3000/employees */}
+         
+          <Route exact path="/employees" render={
+            props => <EmployeeList {...props} />
+          } />
+          
+
+
+
+          <Route exact path="/">
+            <LocationList />
+             </Route>
+
+            <Route path="/employees/:employeeId(\d+)" render={
+              props => <EmployeeDetails {...props} />
+            } />
+
+            <Route path="/employees/create" render={
+              props => <EmployeeList {...props} />
+            } />
+
+          <Route path="/employees/create" render={
+            props => <EmployeeForm {...props} />
+          } />
+
+
+         
+        </LocationProvider>
+      </EmployeeProvider>
+    </>
+  )
 }

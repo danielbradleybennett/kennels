@@ -10,13 +10,33 @@ export const AnimalContext = React.createContext()
  This component establishes what data can be used.
  */
 export const AnimalProvider = (props) => {
-    const [animals, setAnimal] = useState([])
+    const [animals, setAnimals] = useState([])
 
     const getAnimals = () => {
         return fetch("http://localhost:8088/animals")
             .then(res => res.json())
-            .then(setAnimal)
+            .then(setAnimals)
     }
+
+    const releaseAnimal = animalId => {
+      return fetch(`http://localhost:8088/animals/${animalId}`, {
+          method: "DELETE"
+      })
+          .then(getAnimals)
+  }
+
+
+  const updateAnimal = animal => {
+    return fetch(`http://localhost:8088/animals/${animal.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(animal)
+    })
+        .then(getAnimals)
+}
+
 
     const addAnimal = animal => {
         return fetch("http://localhost:8088/animals", {
@@ -37,14 +57,14 @@ export const AnimalProvider = (props) => {
         getAnimals()
     }, [])
 
-    useEffect(() => {
-        console.log("****  Animals APPLICATION STATE CHANGED  ****")
+    // useEffect(() => {
+    //     console.log("****  Animals APPLICATION STATE CHANGED  ****")
         
-    }, [animals])
+    // }, [animals])
 
     return (
         <AnimalContext.Provider value={{
-            animals, addAnimal
+            animals, addAnimal, releaseAnimal, updateAnimal
         }}>
             {props.children}
         </AnimalContext.Provider>
